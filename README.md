@@ -1,7 +1,7 @@
 # web-demo
 A demonstration project for web applications using Spring MVC & Spring Boot, with examples in multiple languages.
 
-[![CI](https://github.com/Earth-1610/spring-demo/actions/workflows/ci.yml/badge.svg)](https://github.com/Earth-1610/spring-demo/actions/workflows/ci.yml)
+[![CI](https://github.com/Earth-1610/web-demo/actions/workflows/ci.yml/badge.svg)](https://github.com/Earth-1610/web-demo/actions/workflows/ci.yml)
 
 ## English Demos (en/)
 - [Java Spring Demo](en/java-spring-demo) - Spring Boot demo with Java
