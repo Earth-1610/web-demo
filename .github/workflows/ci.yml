@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+
+    # English Demos
+    - name: Build and Test English Java Spring Demo
+      run: |
+        cd en/java-spring-demo
+        mvn clean verify
+        
+    - name: Build and Test English Kotlin Spring Demo
+      run: |
+        cd en/kotlin-spring-demo
+        mvn clean verify
+        
+    - name: Build and Test English Java Spring WebFlux Demo
+      run: |
+        cd en/java-spring-webflux-demo
+        mvn clean verify
+
+    # Chinese Demos
+    - name: Build and Test Chinese Java Spring Demo
+      run: |
+        cd cn/java-spring-demo
+        mvn clean verify
+        
+    - name: Build and Test Chinese Kotlin Spring Demo
+      run: |
+        cd cn/kotlin-spring-demo
+        mvn clean verify
+        
+    - name: Build and Test Chinese Java Spring WebFlux Demo
+      run: |
+        cd cn/java-spring-webflux-demo
+        mvn clean verify 
