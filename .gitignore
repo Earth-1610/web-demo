@@ -42,3 +42,6 @@ cn/scala-demo/mvnw
 cn/scala-demo/mvnw\.cmd
 
 cn/scala-demo/\.mvn/
+
+# VS Code
+.vscode/
