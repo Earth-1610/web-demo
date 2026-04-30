@@ -9,45 +9,70 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        project:
+          - name: "EN Java SpringMVC"
+            path: "en/java-springmvc"
+          - name: "EN Java WebFlux"
+            path: "en/java-spring-webflux"
+          - name: "EN Java Feign"
+            path: "en/java-feign"
+          - name: "EN Java JAX-RS"
+            path: "en/java-jaxrs"
+          - name: "EN Kotlin SpringMVC"
+            path: "en/kotlin-springmvc"
+          - name: "CN Java SpringMVC"
+            path: "cn/java-springmvc"
+          - name: "CN Java WebFlux"
+            path: "cn/java-spring-webflux"
+          - name: "CN Java Feign"
+            path: "cn/java-feign"
+          - name: "CN Java JAX-RS"
+            path: "cn/java-jaxrs"
+          - name: "CN Kotlin SpringMVC"
+            path: "cn/kotlin-springmvc"
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Set up JDK 17
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
 
-    # English Demos
-    - name: Build and Test English Java Spring Demo
+    - name: Build and Test ${{ matrix.project.name }}
       run: |
-        cd en/java-spring-demo
-        mvn clean verify
-        
-    - name: Build and Test English Kotlin Spring Demo
-      run: |
-        cd en/kotlin-spring-demo
-        mvn clean verify
-        
-    - name: Build and Test English Java Spring WebFlux Demo
-      run: |
-        cd en/java-spring-webflux-demo
+        echo "Building: ${{ matrix.project.name }}"
+        echo "Path: ${{ matrix.project.path }}"
+        cd ${{ matrix.project.path }}
         mvn clean verify
 
-    # Chinese Demos
-    - name: Build and Test Chinese Java Spring Demo
+    - name: Upload Build Artifacts
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-logs-${{ matrix.project.path }}
+        path: |
+          ${{ matrix.project.path }}/target/
+          !${{ matrix.project.path }}/target/*.jar
+        retention-days: 5
+
+  build-summary:
+    needs: build
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+    - name: Check Build Results
       run: |
-        cd cn/java-spring-demo
-        mvn clean verify
-        
-    - name: Build and Test Chinese Kotlin Spring Demo
-      run: |
-        cd cn/kotlin-spring-demo
-        mvn clean verify
-        
-    - name: Build and Test Chinese Java Spring WebFlux Demo
-      run: |
-        cd cn/java-spring-webflux-demo
-        mvn clean verify 
+        echo "========================================="
+        echo "Build Summary"
+        echo "========================================="
+        echo "All projects have been built."
+        echo "Check individual job results above for details."
+        echo "========================================="
